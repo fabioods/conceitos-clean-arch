@@ -1,13 +1,9 @@
-import { CreateCustomerUseCase } from './create.customer.usecase'
+import { CreateProductUseCase } from './create.product.usecase'
 
 const input = {
-  name: 'John Doe',
-  address: {
-    street: 'Rua dos Bobos',
-    city: 'São Paulo',
-    number: 1,
-    zipcode: '00000-000'
-  }
+  name: 'Product A',
+  price: 10,
+  type: 'normal'
 }
 
 const MockRepository = () => {
@@ -19,34 +15,34 @@ const MockRepository = () => {
   }
 }
 
-describe('CreateCustomer', () => {
-  it('should create a customer', async () => {
+describe('CreateProduct unit', () => {
+  it('should create a product', async () => {
     const repository = MockRepository()
-    const useCase = new CreateCustomerUseCase(repository)
-    const customer = await useCase.execute(input)
+    const useCase = new CreateProductUseCase(repository)
+    const product = await useCase.execute(input)
 
     const output = {
       id: expect.any(String),
       ...input
     }
-    expect(customer).toEqual(output)
+    expect(product).toEqual(output)
   })
 
   it('should return an error when call create', async () => {
     const repository = MockRepository()
     repository.create.mockImplementation(() => { throw new Error('Error') })
-    const useCase = new CreateCustomerUseCase(repository)
+    const useCase = new CreateProductUseCase(repository)
 
     await expect(useCase.execute(input)).rejects.toThrowError('Error')
   })
 
   it('should thrown an error when name is missing', async () => {
     const repository = MockRepository()
-    const useCase = new CreateCustomerUseCase(repository)
+    const useCase = new CreateProductUseCase(repository)
 
     const inputWithoutName = Object.assign({}, input)
     inputWithoutName.name = ''
 
-    await expect(useCase.execute(inputWithoutName)).rejects.toThrow('Customer name is required')
+    await expect(useCase.execute(inputWithoutName)).rejects.toThrow('Product name is required')
   })
 })
