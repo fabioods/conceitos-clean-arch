@@ -27,15 +27,13 @@ describe('Test Create Product use case with integration', () => {
 
     const result = await useCase.execute({
       name: 'Product 1',
-      price: 10,
-      type: 'normal'
+      price: 10
     })
 
     const output = {
       id: result.id,
       name: 'Product 1',
-      price: 10,
-      type: 'normal'
+      price: 10
     }
 
     expect(result).toEqual(output)
