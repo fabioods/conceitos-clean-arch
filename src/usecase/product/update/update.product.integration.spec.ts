@@ -31,12 +31,13 @@ describe('Update product with integration test', () => {
 
     const result = await useCase.execute({
       id: product.id,
-      price: 20
+      price: 20,
+      name: 'Product 2'
     })
 
     const output = {
       id: product.id,
-      name: 'Product 1',
+      name: 'Product 2',
       price: 20
     }
 

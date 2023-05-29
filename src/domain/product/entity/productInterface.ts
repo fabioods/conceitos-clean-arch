@@ -4,4 +4,5 @@ export interface ProductInterface {
   get price(): number
 
   changePrice: (price: number) => void
+  changeName: (name: string) => void
 }

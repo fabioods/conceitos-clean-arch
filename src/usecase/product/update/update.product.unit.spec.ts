@@ -3,7 +3,8 @@ import { UpdateProductUseCase } from './update.product.usecase'
 
 const input = {
   id: '1',
-  price: 20
+  price: 20,
+  name: 'Product 2'
 }
 
 const product = ProductFactory.create('normal', 'Product A', 10)
@@ -26,7 +27,7 @@ describe('Unit test Update Product use case', () => {
 
     const output = {
       id: expect.any(String),
-      name: 'Product A',
+      name: 'Product 2',
       price: 20
     }
 

@@ -8,6 +8,7 @@ export class UpdateProductUseCase {
   async execute (input: InputUpdateProductDto): Promise<OutputUpdateProductDto> {
     const product = await this.repository.find(input.id)
     product.changePrice(input.price)
+    product.changeName(input.name)
     await this.repository.update(product)
     return {
       id: product.id,
