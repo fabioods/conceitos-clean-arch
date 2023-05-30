@@ -3,35 +3,36 @@ import { Address } from '../valueObject/address'
 import { Customer } from './customer'
 
 describe('Customer tests', () => {
-  it('devemos ter 1 = 1', () => {
-    const result = 1
-    expect(result).toBe(1)
-  })
-
   it('should throw error when id is empty', () => {
     expect(() => {
       const customer = new Customer('', 'Fábio')
-    }).toThrowError('Customer id is required')
+    }).toThrowError('customer: Customer id is required')
   })
 
   it('should throw error when name is empty', () => {
     expect(() => {
       const customer = new Customer('1', '')
-    }).toThrowError('Customer name is required')
+    }).toThrowError('customer: Customer name is required')
+  })
+
+  it('should throw error when name and id are empty', () => {
+    expect(() => {
+      const customer = new Customer('', '')
+    }).toThrowError('customer: Customer name is required, customer: Customer id is required')
   })
 
   it('should throw error when address is empty', () => {
     const customer = new Customer('1', 'Fabio')
     expect(() => {
       customer.defineAddress(null)
-    }).toThrowError('Customer address is required')
+    }).toThrowError('customer: Customer address is required')
   })
 
   it('should throw error when try to active a customer with no address', () => {
     const customer = new Customer('1', 'Fabio')
     expect(() => {
       customer.activate()
-    }).toThrowError('Customer address is required')
+    }).toThrowError('customer: Customer address is required')
   })
 
   it('should change a customer name', () => {

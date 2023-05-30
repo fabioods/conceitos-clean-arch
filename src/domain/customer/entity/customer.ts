@@ -1,8 +1,8 @@
+import { Entity } from '../../shared/entity/entity.abstract'
+import { NotificationError } from '../../shared/notification/notification.error'
 import { Address } from '../valueObject/address'
 
-export class Customer {
-  private readonly _id: string
-
+export class Customer extends Entity {
   private _name: string
 
   private _address: Address
@@ -12,6 +12,7 @@ export class Customer {
   private _rewardPoints = 0
 
   constructor (id: string, name: string) {
+    super()
     this._id = id
     this._name = name
     this.validate()
@@ -30,10 +31,6 @@ export class Customer {
     return this._rewardPoints
   }
 
-  get id (): string {
-    return this._id
-  }
-
   get address (): Address {
     return this._address
   }
@@ -44,17 +41,32 @@ export class Customer {
 
   defineAddress (address: Address) {
     if (!address) {
-      throw new Error('Customer address is required')
+      this.notification.addError({
+        message: 'Customer address is required',
+        context: 'customer'
+      })
+      throw new NotificationError(this.notification.getErrors())
     }
     this._address = address
   }
 
   validate () {
     if (!this._name) {
-      throw new Error('Customer name is required')
+      this.notification.addError({
+        message: 'Customer name is required',
+        context: 'customer'
+      })
     }
-    if (!this._id) {
-      throw new Error('Customer id is required')
+
+    if (!this.id) {
+      this.notification.addError({
+        message: 'Customer id is required',
+        context: 'customer'
+      })
+    }
+
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.getErrors())
     }
   }
 
@@ -65,7 +77,11 @@ export class Customer {
 
   activate () {
     if (!this._address) {
-      throw new Error('Customer address is required to active customer')
+      this.notification.addError({
+        message: 'Customer address is required to active customer',
+        context: 'customer'
+      })
+      throw new NotificationError(this.notification.getErrors())
     }
     this._active = true
   }
