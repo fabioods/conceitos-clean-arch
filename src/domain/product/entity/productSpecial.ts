@@ -1,19 +1,17 @@
+import { Entity } from '../../shared/entity/entity.abstract'
+import { NotificationError } from '../../shared/notification/notification.error'
 import { ProductInterface } from './productInterface'
 
-export class ProductSpecial implements ProductInterface {
-  private readonly _id: string
+export class ProductSpecial extends Entity implements ProductInterface {
   private _name: string
   private _price: number
 
   constructor (id: string, name: string, price: number) {
+    super()
     this._id = id
     this._name = name
     this._price = price
     this.validate()
-  }
-
-  get id (): string {
-    return this._id
   }
 
   get name (): string {
@@ -26,13 +24,26 @@ export class ProductSpecial implements ProductInterface {
 
   validate () {
     if (!this._id) {
-      throw new Error('Product id is required')
+      this.notification.addError({
+        context: 'product',
+        message: 'Product id is required'
+      })
     }
     if (!this._name) {
-      throw new Error('Product name is required')
+      this.notification.addError({
+        context: 'product',
+        message: 'Product name is required'
+      })
     }
     if (!this._price || this._price <= 0) {
-      throw new Error('Product price is invalid')
+      this.notification.addError({
+        context: 'product',
+        message: 'Product price is invalid'
+      })
+    }
+
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.getErrors())
     }
   }
 
