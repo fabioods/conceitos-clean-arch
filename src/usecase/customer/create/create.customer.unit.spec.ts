@@ -47,6 +47,6 @@ describe('CreateCustomer', () => {
     const inputWithoutName = Object.assign({}, input)
     inputWithoutName.name = ''
 
-    await expect(useCase.execute(inputWithoutName)).rejects.toThrow('Customer name is required')
+    await expect(useCase.execute(inputWithoutName)).rejects.toThrow('customer: Name is required')
   })
 })
