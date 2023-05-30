@@ -1,5 +1,6 @@
 import { Entity } from '../../shared/entity/entity.abstract'
 import { NotificationError } from '../../shared/notification/notification.error'
+import { CustomerValidatorFactory } from '../factory/customer.validator.factory'
 import { Address } from '../valueObject/address'
 
 export class Customer extends Entity {
@@ -16,6 +17,9 @@ export class Customer extends Entity {
     this._id = id
     this._name = name
     this.validate()
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.getErrors())
+    }
   }
 
   // Isso é errado, pois assim o customer será criado de maneira inconsistente
@@ -51,23 +55,7 @@ export class Customer extends Entity {
   }
 
   validate () {
-    if (!this._name) {
-      this.notification.addError({
-        message: 'Customer name is required',
-        context: 'customer'
-      })
-    }
-
-    if (!this.id) {
-      this.notification.addError({
-        message: 'Customer id is required',
-        context: 'customer'
-      })
-    }
-
-    if (this.notification.hasErrors()) {
-      throw new NotificationError(this.notification.getErrors())
-    }
+    CustomerValidatorFactory.create().validate(this)
   }
 
   changeName (name: string) {

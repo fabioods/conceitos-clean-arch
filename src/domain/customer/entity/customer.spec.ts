@@ -6,19 +6,19 @@ describe('Customer tests', () => {
   it('should throw error when id is empty', () => {
     expect(() => {
       const customer = new Customer('', 'Fábio')
-    }).toThrowError('customer: Customer id is required')
+    }).toThrowError('customer: ID is required')
   })
 
   it('should throw error when name is empty', () => {
     expect(() => {
       const customer = new Customer('1', '')
-    }).toThrowError('customer: Customer name is required')
+    }).toThrowError('customer: Name is required')
   })
 
   it('should throw error when name and id are empty', () => {
     expect(() => {
       const customer = new Customer('', '')
-    }).toThrowError('customer: Customer name is required, customer: Customer id is required')
+    }).toThrowError('customer: ID is required, customer: Name is required')
   })
 
   it('should throw error when address is empty', () => {
