@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express'
 import { CreateCustomerUseCase } from '../../../usecase/customer/create/create.customer.usecase'
 import { CustomerSequelizeRepository } from '../../customer/repository/sequelize/customerSequelizeRepository'
 import { ListCustomerUseCase } from '../../../usecase/customer/list/list.usecase'
+import { CustomerPresenter } from '../presenters/customer.presenter'
 
 export const customerRoute = express.Router()
 
@@ -28,5 +29,11 @@ customerRoute.post('/', async (req: Request, res: Response) => {
 customerRoute.get('/', async (req: Request, res: Response) => {
   const useCase = new ListCustomerUseCase(new CustomerSequelizeRepository())
   const output = await useCase.execute({})
-  res.status(200).json(output.customers)
+  res.format({
+    json: () => res.send(output),
+    xml: () => {
+      const xmlResponse = CustomerPresenter.toXML(output)
+      res.send(xmlResponse)
+    }
+  })
 })
