@@ -42,6 +42,6 @@ describe('CreateProduct unit', () => {
     const inputWithoutName = Object.assign({}, input)
     inputWithoutName.name = ''
 
-    await expect(useCase.execute(inputWithoutName)).rejects.toThrow('Product name is required')
+    await expect(useCase.execute(inputWithoutName)).rejects.toThrow('product: Name is required')
   })
 })
